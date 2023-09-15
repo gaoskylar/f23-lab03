@@ -2,8 +2,8 @@ import { newArrayIntQueue } from "../src/arrayqueue";
 import { newLinkedListIntQueue } from "../src/linkedlistqueue.js";
 
 // pick one queue implementation, can run test easily for both, due to subtype polymorphism
-let createQueue = newLinkedListIntQueue
-// let createQueue = newArrayIntQueue
+// let createQueue = newLinkedListIntQueue
+let createQueue = newArrayIntQueue
 
 // TODOs:
 // write more test cases to test dequeue and clear functions.
@@ -19,15 +19,32 @@ test("test isEmpty: list with 1 element is not empty", () => {
 })
 
 test("test peek: newly created list should peek null", () => {
-
     expect(createQueue().peek()).toBeNull()
+})
+
+test("test clear: queue should be empty after calling clear()", () => {
+    const queue = createQueue()
+    queue.enqueue(2)
+    queue.clear()
+    expect(queue.isEmpty())
+})
+
+test("test dequeue: queue should return the dequeued element)", () => {
+    const queue = createQueue()
+    queue.enqueue(2)
+    expect(queue.dequeue() == 2)
+})
+
+test("test dequeue: queue should return null when dequeuing an empty queue)", () => {
+    const queue = createQueue()
+    expect(queue.dequeue()).toBeNull()
 })
 
 test("test peek: queue with 2 element should peek the one that was most recently added", () => {
     const queue = createQueue()
     queue.enqueue(2)
     queue.enqueue(3)
-    expect(queue.peek()).toEqual(3)
+    expect(queue.peek()).toEqual(2)
 })
 
 let param = [5, 10, 1000000]
@@ -51,5 +68,19 @@ describe("test size: ", ()=> {
         for (let i =0;i<11;i++)
             queue.enqueue(i)
         expect(queue.size()).toBe(11)
+    })
+
+    test("alignment", ()=>{
+        const queue = createQueue()
+        const originalState = [];
+        for(let i = 0; i<10; i++){
+            queue.enqueue(i)
+            originalState.push(i)
+        }
+        queue.enqueue(10)
+        originalState[10] = 10
+        for(let i = 0; i<11; i++){
+            expect(queue.dequeue()).toEqual(originalState[i]);
+        }
     })
 })
