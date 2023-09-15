@@ -94,7 +94,7 @@ public class IntQueueTest {
 
     @Test
     public void testEnsureCapacity() {
-        int[] originalState = new int[10];
+        int[] originalState = new int[11];
         for (int i = 0; i < 10; i++) {
             mQueue.enqueue(i);
             originalState[i] = i;
@@ -102,12 +102,10 @@ public class IntQueueTest {
 
         mQueue.enqueue(10);
 
-        int[] expectedState = new int[21];
-        System.arraycopy(originalState, 0, expectedState, 0, 10);
-        expectedState[10] = 10;
+        originalState[10] = 10;
 
         for (int i = 0; i <= 10; i++) {
-            assertEquals(expectedState[i], (int)mQueue.dequeue());
+            assertEquals(originalState[i], (int)mQueue.dequeue());
         }
     }
 
