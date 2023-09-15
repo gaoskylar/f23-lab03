@@ -81,6 +81,38 @@ public class IntQueueTest {
     }
 
     @Test
+    public void testEmptyDequeue() {
+        assertEquals(mQueue.dequeue(), null);
+    }
+
+    @Test
+    public void testClear() {
+        mQueue.enqueue(1);
+        mQueue.clear();
+        assertTrue(mQueue.isEmpty());
+    }
+
+    @Test
+    public void testEnsureCapacity() {
+        int[] originalState = new int[10];
+        for (int i = 0; i < 10; i++) {
+            mQueue.enqueue(i);
+            originalState[i] = i;
+        }
+
+        mQueue.enqueue(10);
+
+        int[] expectedState = new int[21];
+        System.arraycopy(originalState, 0, expectedState, 0, 10);
+        expectedState[10] = 10;
+
+        for (int i = 0; i <= 10; i++) {
+            assertEquals(expectedState[i], (int)mQueue.dequeue());
+        }
+    }
+
+
+    @Test
     public void testContent() throws IOException {
         InputStream in = new FileInputStream("src/test/resources/data.txt");
         try (Scanner scanner = new Scanner(in)) {
